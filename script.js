@@ -166,6 +166,10 @@ const Triangle = function () {
   );
   gl.enableVertexAttribArray(textureAttribLocation);
 
+  const boxTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, boxTexture);
+  gl.texParameteri(gl.TEXTURE_2D, boxTexture);
+
   const modelMatLocation = gl.getUniformLocation(program, "mModel");
   const viewMatLocation = gl.getUniformLocation(program, "mView");
   const projMatLocation = gl.getUniformLocation(program, "mProj");
