@@ -31,26 +31,6 @@ const Triangle = function () {
 
   gl.linkProgram(program);
 
-  // let triangleVertices =      // here we get all the info in one batch
-  // [ // X, Y,     Z
-  // 	0.0, 0.5,   0.0,
-  // 	-0.5, -0.5, 0.0,
-  // 	0.5, -0.5,  0.0
-  // ];
-  const boxTexCoords = [
-    0, 0, 0, 1, 1, 1, 1, 0,
-
-    0, 0, 1, 0, 1, 1, 0, 1,
-
-    // second
-    1, 1, 0, 1, 0, 0, 1, 0,
-
-    1, 1, 1, 0, 0, 0, 0, 1,
-
-    0, 0, 0, 1, 1, 1, 1, 0,
-
-    1, 1, 1, 0, 0, 0, 0, 1,
-  ];
   const boxVertices = [
     // X, Y, Z
     // Top
@@ -92,18 +72,52 @@ const Triangle = function () {
     21, 20, 22, 22, 20, 23,
   ];
 
-  let colors = [
-    1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.2, 1.0, 0.5, 1.0, 0.0,
+  // let colors =
+  // [
+  //     1.0, 0.0, 0.0,
+  //     0.0, 1.0, 0.0,
+  //     0.0, 0.2, 1.0,
+  //     0.5, 1.0, 0.0,
 
-    0.8, 0.0, 0.2, 0.0, 1.0, 1.0, 0.0, 0.2, 1.0, 0.5, 1.0, 0.0,
+  //     0.8, 0.0, 0.2,
+  //     0.0, 1.0, 1.0,
+  //     0.0, 0.2, 1.0,
+  //     0.5, 1.0, 0.0,
 
-    1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.2, 1.0, 0.5, 1.0, 0.0,
+  //     1.0, 0.0, 0.0,
+  //     0.0, 1.0, 0.0,
+  //     0.0, 0.2, 1.0,
+  //     0.5, 1.0, 0.0,
 
-    1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.2, 1.0, 0.5, 1.0, 0.0,
+  //     1.0, 0.0, 0.0,
+  //     0.0, 1.0, 0.0,
+  //     0.0, 0.2, 1.0,
+  //     0.5, 1.0, 0.0,
 
-    1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.2, 1.0, 0.5, 1.0, 0.0,
+  //     1.0, 0.0, 0.0,
+  //     0.0, 1.0, 0.0,
+  //     0.0, 0.2, 1.0,
+  //     0.5, 1.0, 0.0,
 
-    1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.2, 1.0, 0.5, 1.0, 0.0,
+  //     1.0, 0.0, 0.0,
+  //     0.0, 1.0, 0.0,
+  //     0.0, 0.2, 1.0,
+  //     0.5, 1.0, 0.0,
+  // ];
+
+  const boxTexCoords = [
+    0, 0, 0, 1, 1, 1, 1, 0,
+
+    0, 0, 1, 0, 1, 1, 0, 1,
+
+    // second
+    1, 1, 0, 1, 0, 0, 1, 0,
+
+    1, 1, 1, 0, 0, 0, 0, 1,
+
+    0, 0, 0, 1, 1, 1, 1, 0,
+
+    1, 1, 1, 0, 0, 0, 0, 1,
   ];
 
   // const triangleVertBuffer = gl.createBuffer();
@@ -132,20 +146,20 @@ const Triangle = function () {
   );
   gl.enableVertexAttribArray(posAttribLocation);
 
-  //   const triangleColorBuffer = gl.createBuffer();
-  //   gl.bindBuffer(gl.ARRAY_BUFFER, triangleColorBuffer);
-  //   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+  // const triangleColorBuffer = gl.createBuffer();
+  // gl.bindBuffer(gl.ARRAY_BUFFER, triangleColorBuffer);
+  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-  //   const colorAttribLocation = gl.getAttribLocation(program, "vertColor");
-  //   gl.vertexAttribPointer(
-  //     colorAttribLocation, //index
+  // const colorAttribLocation = gl.getAttribLocation(program, 'vertColor');
+  // gl.vertexAttribPointer(
+  //     colorAttribLocation,    //index
   //     3, // number of components
-  //     gl.FLOAT, // type of that attrib, location is in floats
-  //     false, // if the thing should be normalized
-  //     3 * Float32Array.BYTES_PER_ELEMENT, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
+  //     gl.FLOAT,// type of that attrib, location is in floats
+  //     false,// if the thing should be normalized
+  //     3*Float32Array.BYTES_PER_ELEMENT, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
   //     0
-  //   );
-  //   gl.enableVertexAttribArray(colorAttribLocation);
+  // );
+  // gl.enableVertexAttribArray(colorAttribLocation);
 
   const textureBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
@@ -154,7 +168,6 @@ const Triangle = function () {
     new Float32Array(boxTexCoords),
     gl.STATIC_DRAW
   );
-
   const textureAttribLocation = gl.getAttribLocation(program, "textureCoord");
   gl.vertexAttribPointer(
     textureAttribLocation, //index
@@ -236,7 +249,7 @@ const Triangle = function () {
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.bindTexture(gl.TEXTURE_2D, boxTexture);
-    gl.activeTexture(gl.TEXTURE0);
+    gl.activeTexture(gl.TEXTURE0); // 0 is the index of an buffer
 
     // gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.drawElements(gl.TRIANGLES, boxIndices.length, gl.UNSIGNED_SHORT, 0);
