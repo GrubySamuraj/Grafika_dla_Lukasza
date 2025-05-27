@@ -168,7 +168,18 @@ const Triangle = function () {
 
   const boxTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, boxTexture);
-  gl.texParameteri(gl.TEXTURE_2D, boxTexture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    gl.RGBA,
+    gl.UNSIGNED_SHORT,
+    document.getElementById("img")
+  );
 
   const modelMatLocation = gl.getUniformLocation(program, "mModel");
   const viewMatLocation = gl.getUniformLocation(program, "mView");
@@ -223,6 +234,9 @@ const Triangle = function () {
 
     gl.clearColor(...canvas_color, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.bindTexture(gl.TEXTURE_2D, boxTexture);
+    gl.activeTexture(gl.TEXTURE0);
 
     // gl.drawArrays(gl.TRIANGLES, 0, 3);
     gl.drawElements(gl.TRIANGLES, boxIndices.length, gl.UNSIGNED_SHORT, 0);
