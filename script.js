@@ -44,109 +44,19 @@ const Triangle = function () {
 
   gl.linkProgram(program);
 
-  const boxVertices = [
-    // X, Y, Z
-    // Top
-    -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0,
-
-    // Left
-    -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0,
-
-    // Right
-    1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0,
-
-    // Front
-    1.0, 1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0,
-
-    // Back
-    1.0, 1.0, -1.0, 1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0,
-
-    // Bottom
-    -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0,
-  ];
-
-  const boxIndices = [
-    // Top
-    0, 1, 2, 0, 2, 3,
-
-    // Left
-    5, 4, 6, 6, 4, 7,
-
-    // Right
-    8, 9, 10, 8, 10, 11,
-
-    // Front
-    13, 12, 14, 15, 14, 12,
-
-    // Back
-    16, 17, 18, 16, 18, 19,
-
-    // Bottom
-    21, 20, 22, 22, 20, 23,
-  ];
-
-  // let colors =
-  // [
-  //     1.0, 0.0, 0.0,
-  //     0.0, 1.0, 0.0,
-  //     0.0, 0.2, 1.0,
-  //     0.5, 1.0, 0.0,
-
-  //     0.8, 0.0, 0.2,
-  //     0.0, 1.0, 1.0,
-  //     0.0, 0.2, 1.0,
-  //     0.5, 1.0, 0.0,
-
-  //     1.0, 0.0, 0.0,
-  //     0.0, 1.0, 0.0,
-  //     0.0, 0.2, 1.0,
-  //     0.5, 1.0, 0.0,
-
-  //     1.0, 0.0, 0.0,
-  //     0.0, 1.0, 0.0,
-  //     0.0, 0.2, 1.0,
-  //     0.5, 1.0, 0.0,
-
-  //     1.0, 0.0, 0.0,
-  //     0.0, 1.0, 0.0,
-  //     0.0, 0.2, 1.0,
-  //     0.5, 1.0, 0.0,
-
-  //     1.0, 0.0, 0.0,
-  //     0.0, 1.0, 0.0,
-  //     0.0, 0.2, 1.0,
-  //     0.5, 1.0, 0.0,
-  // ];
-
-  const boxTexCoords = [
-    0, 0, 0, 1, 1, 1, 1, 0,
-
-    0, 0, 1, 0, 1, 1, 0, 1,
-
-    // second
-    0.25, 0.25, 0, 0.25, 0, 0, 0.25, 0,
-
-    1, 1, 1, 0, 0, 0, 0, 1,
-
-    0, 0, 0, 1, 1, 1, 1, 0,
-
-    1, 1, 1, 0, 0, 0, 0, 1,
-  ];
+  OBJ.initMeshBuffers(gl, meshes.car);
 
   // const triangleVertBuffer = gl.createBuffer();
   // gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertBuffer);
   // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.STATIC_DRAW);
-  const cubeVertBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(boxVertices), gl.STATIC_DRAW);
+  //   const cubeVertBuffer = gl.createBuffer();
 
-  const cubeIndexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIndexBuffer);
-  gl.bufferData(
-    gl.ELEMENT_ARRAY_BUFFER,
-    new Uint16Array(boxIndices),
-    gl.STATIC_DRAW
-  );
+  gl.bindBuffer(gl.ARRAY_BUFFER, meshes.car.vertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, meshes.car.vertices, gl.STATIC_DRAW);
+
+  //   const cubeIndexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, meshes.car.indexBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, meshes.car.indices, gl.STATIC_DRAW);
 
   const posAttribLocation = gl.getAttribLocation(program, "vertPosition");
   gl.vertexAttribPointer(
