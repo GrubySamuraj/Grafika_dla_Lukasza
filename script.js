@@ -96,6 +96,18 @@ const Triangle = function (meshes) {
   );
   gl.enableVertexAttribArray(textureAttribLocation);
 
+  gl.bindBuffer(gl.ARRAY_BUFFER, meshes.car.normalBuffer);
+  const normalAttribLocation = gl.getAttribLocation(program, "vertNormal");
+  gl.vertexAttribPointer(
+    normalAttribLocation, //index
+    meshes.car.normalBuffer.itemSize, // number of components
+    gl.FLOAT, // type of that attrib, location is in floats
+    false, // if the thing should be normalized
+    0, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
+    0
+  );
+  gl.enableVertexAttribArray(normalAttribLocation);
+
   const boxTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, boxTexture);
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -145,6 +157,24 @@ const Triangle = function (meshes) {
   );
 
   gl.useProgram(program);
+
+  const ambientUniformLocation = gl.getUniformLocation(
+    program,
+    "ambientLightIntensity"
+  );
+  const lightDirUniformLocation = gl.getUniformLocation(
+    program,
+    "lightDirection"
+  );
+
+  const lightColorUniformLocation = gl.getUniformLocation(
+    program,
+    "lightColor"
+  );
+
+  gl.uniform3f(ambientUniformLocation, 0.2, 0.2, 0.2);
+  gl.uniform3f(lightDirUniformLocation, 3.0, 4.0, -2.0);
+  gl.uniform3f(lightColorUniformLocation, 0.9, 0.9, 0.9);
 
   gl.uniformMatrix4fv(modelMatLocation, false, modelMatrix);
   gl.uniformMatrix4fv(viewMatLocation, false, viewMatrix);
