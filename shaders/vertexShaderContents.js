@@ -15,7 +15,7 @@ varying vec3 fragmentNormal;
 void main() {
     fragTextureCoord = textureCoord;
 
-    fragmentNormal = vertNormal;
+    fragmentNormal = (mModel * vec4(vertNormal, 0.0)).xyz;
 
     gl_Position = mProj * mView * mModel * vec4(vertPosition, 1.0);
 }

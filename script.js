@@ -146,7 +146,7 @@ const Triangle = function (meshes) {
   );
 
   let viewMatrix = glm.mat4.create();
-  glm.mat4.lookAt(viewMatrix, [0, 0, -15], [0, 0, 0], [0, 1, 0]); // vectors are: position of the camera, which way they are looking, which way is up
+  glm.mat4.lookAt(viewMatrix, [0, 0, -5], [0, 0, 0], [0, 1, 0]); // vectors are: position of the camera, which way they are looking, which way is up
   let projMatrix = glm.mat4.create();
   glm.mat4.perspective(
     projMatrix,

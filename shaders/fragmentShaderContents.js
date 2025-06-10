@@ -16,6 +16,8 @@ void main() {
 
     vec3 lightIntensity = ambientLightIntensity + lightColor * max(dot(fragmentNormal, lightDirection), 0.0);
 
+    gl_FragColor = vec4(fragmentNormal, 1.0);
     gl_FragColor = vec4(texel.rgb * lightIntensity, texel.a);
+
 }
 `;
