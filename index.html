@@ -3,15 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <title>My test page</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css">
   </head>
-  <body onload="Triangle();">
+  <body onload="startDraw();">
     <canvas id="main-canvas" width="800" height="600"></canvas>
   </body>
-  <img id="img" src="texture.png" hidden />
-  <script src="./webgl-obj-loader.js"></script>
+  <img id="img" src="texture.png" hidden/>
+  <img id="blend_texture" src="models/WEIRD_.png" hidden/>
+  <script src="webgl-obj-loader.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/gl-matrix@3/gl-matrix.js"></script>
   <script src="shaders/fragmentShaderContents.js"></script>
   <script src="shaders/vertexShaderContents.js"></script>
+
   <script src="script.js"></script>
 </html>

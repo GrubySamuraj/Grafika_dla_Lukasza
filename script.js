@@ -1,19 +1,18 @@
 const glm = glMatrix;
 
-let app = {
-  meshes: {},
-};
+let app = {};
+app.meshes = {};
 
-function stardDraw() {
+function startDraw() {
   OBJ.downloadMeshes(
     {
-      car: "texture.png",
+      car: "models/WEIRD_CAR.obj",
     },
     Triangle
   );
 }
 
-const Triangle = function () {
+const Triangle = function (meshes) {
   const canvas = document.getElementById("main-canvas");
   const gl = canvas.getContext("webgl2");
 
@@ -45,28 +44,27 @@ const Triangle = function () {
   gl.linkProgram(program);
 
   OBJ.initMeshBuffers(gl, meshes.car);
-
   // const triangleVertBuffer = gl.createBuffer();
   // gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertBuffer);
   // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangleVertices), gl.STATIC_DRAW);
-  //   const cubeVertBuffer = gl.createBuffer();
-
+  // const cubeVertBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, meshes.car.vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, meshes.car.vertices, gl.STATIC_DRAW);
+  //   gl.bufferData(gl.ARRAY_BUFFER, meshes.car.vertices, gl.STATIC_DRAW);
 
-  //   const cubeIndexBuffer = gl.createBuffer();
+  // const cubeIndexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, meshes.car.indexBuffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, meshes.car.indices, gl.STATIC_DRAW);
+  //   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, meshes.car.indices, gl.STATIC_DRAW);
 
   const posAttribLocation = gl.getAttribLocation(program, "vertPosition");
   gl.vertexAttribPointer(
     posAttribLocation,
-    3, // number of components (here is 3, bcs we are in 3d space)
+    meshes.car.vertexBuffer.itemSize, // number of components (here is 3, bcs we are in 3d space)
     gl.FLOAT, // type of that attrib, location is in floats
     false, // if the thing should be normalized
-    3 * Float32Array.BYTES_PER_ELEMENT, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
+    0, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
     0
   );
+  console.log(Object.keys(meshes.car));
   gl.enableVertexAttribArray(posAttribLocation);
 
   // const triangleColorBuffer = gl.createBuffer();
@@ -84,28 +82,25 @@ const Triangle = function () {
   // );
   // gl.enableVertexAttribArray(colorAttribLocation);
 
-  const textureBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, textureBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array(boxTexCoords),
-    gl.STATIC_DRAW
-  );
+  // const textureBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, meshes.car.textureBuffer);
+  //   gl.bufferData(gl.ARRAY_BUFFER, meshes.car.textures, gl.STATIC_DRAW);
   const textureAttribLocation = gl.getAttribLocation(program, "textureCoord");
   gl.vertexAttribPointer(
     textureAttribLocation, //index
-    2, // number of components
+    meshes.car.textureBuffer.itemSize, // number of components
     gl.FLOAT, // type of that attrib, location is in floats
     false, // if the thing should be normalized
-    2 * Float32Array.BYTES_PER_ELEMENT, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
+    0, // STRIDE offset in bytes between the beginning of consecutive vertex attributes.
     0
   );
   gl.enableVertexAttribArray(textureAttribLocation);
 
   const boxTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, boxTexture);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.texImage2D(
@@ -114,8 +109,9 @@ const Triangle = function () {
     gl.RGBA,
     gl.RGBA,
     gl.UNSIGNED_BYTE,
-    document.getElementById("img")
+    document.getElementById("blend_texture")
   );
+  gl.bindTexture(gl.TEXTURE_2D, null);
 
   const modelMatLocation = gl.getUniformLocation(program, "mModel");
   const viewMatLocation = gl.getUniformLocation(program, "mView");
@@ -138,7 +134,7 @@ const Triangle = function () {
   );
 
   let viewMatrix = glm.mat4.create();
-  glm.mat4.lookAt(viewMatrix, [0, 0, -2], [0, 0, 0], [0, 1, 0]); // vectors are: position of the camera, which way they are looking, which way is up
+  glm.mat4.lookAt(viewMatrix, [0, 0, -15], [0, 0, 0], [0, 1, 0]); // vectors are: position of the camera, which way they are looking, which way is up
   let projMatrix = glm.mat4.create();
   glm.mat4.perspective(
     projMatrix,
@@ -175,7 +171,12 @@ const Triangle = function () {
     gl.activeTexture(gl.TEXTURE0); // 0 is the index of an buffer
 
     // gl.drawArrays(gl.TRIANGLES, 0, 3);
-    gl.drawElements(gl.TRIANGLES, boxIndices.length, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(
+      gl.TRIANGLES,
+      meshes.car.indexBuffer.numItems,
+      gl.UNSIGNED_SHORT,
+      0
+    );
 
     requestAnimationFrame(loop);
   };
